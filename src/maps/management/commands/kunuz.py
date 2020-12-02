@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 import scrapy
 from scrapy.crawler import CrawlerProcess
+from maps.models import News
 
 class Command(BaseCommand):
 
@@ -27,8 +28,25 @@ class KunSpider(scrapy.Spider):
             url = response.urljoin(href)
             yield scrapy.Request(url, callback = self.parse_dir_contents)
             #yield {'title': title.css('a ::text').get()}
-
+            break
     def parse_dir_contents(self, response):
-        for data in response.css('.tags-ui__items'):
-            tag_name = data.css('.tags-ui__item a::text').get()
-            print(tag_name)
+        data=response.css('.single-layout__center')
+        title = data.css('.single-header__title ::text').get()
+        news_date = data.css('.date ::text').get()
+        news_date = data.css('.date ::text').get()
+
+        content=""
+        for news in data.css('.single-content>p'):
+            t = news.css("p ::text").get()
+            if t:
+                content =f'{content}{t}'
+            # print(news.css('p ::text').get())
+        print(title, news_date)
+        # print(content)
+        link=response.url
+        print(link)
+        model=News(title=title,
+            link=link, web_site='kun.uz',
+            news_date=news_date,
+            content=content)
+        model.save()
