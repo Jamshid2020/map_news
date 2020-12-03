@@ -28,7 +28,7 @@ class KunSpider(scrapy.Spider):
             url = response.urljoin(href)
             yield scrapy.Request(url, callback = self.parse_dir_contents)
             #yield {'title': title.css('a ::text').get()}
-            break
+            
     def parse_dir_contents(self, response):
         data=response.css('.single-layout__center')
         title = data.css('.single-header__title ::text').get()

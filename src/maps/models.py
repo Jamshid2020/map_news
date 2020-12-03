@@ -9,3 +9,9 @@ class News(models.Model):
     content = models.TextField(null=False,)
     document_vector = SearchVectorField(null=True,)
     created = models.DateTimeField(auto_now=True,)
+
+class Region(models.Model):
+
+    name_region = models.CharField(max_length=300, null=False)
+    koordinate_region = models.CharField(max_length=300, null=False)
+
