@@ -1,13 +1,22 @@
 from django.shortcuts import render
 from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 from .models import News
-def index(request):
-    q = request.GET.get('q', '')
-    print(q)
-    vector = SearchVector('document_vector')
-    query = SearchQuery(q)
-    model = News.objects.annotate(rank=SearchRank(vector, query)).order_by('-rank')
+from .services import searchNews
 
-    for data in model:
-        print(data.title)
+def index(request):
+
+
+    # q = request.GET.get('q', '')
+    # search_query = SearchQuery(f"{q}:*", search_type='raw')
+
+    # .annotate(rank=SearchRank(vector, query)).
+    # model = News.objects.filter(document_vector=search_query).order_by('-created')[:10]
+
+    # for data in model:
+    #     print(data.title)
+
+
+    result = searchNews(request, 10)
+    print(result)
+
     return render(request,'map/index.html',{"list":1})

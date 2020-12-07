@@ -26,6 +26,9 @@ SECRET_KEY = 'vhpfo^ffc!2y_4js*u16a!itcgl!%!nzyb88&2nb%fk+nma89d'
 DEBUG = True
 
 ALLOWED_HOSTS = []
+INTERNAL_IPS = [
+    '127.0.0.1'
+]
 
 
 # Application definition
@@ -38,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'debug_toolbar',
     'maps',
 
 ]
@@ -47,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
