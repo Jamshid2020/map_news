@@ -17,6 +17,9 @@ def index(request):
 
 
     result = searchNews(request, 10)
-    print(result)
+    for title, link, region_id, region_name, coordinates in result:
+        print(region_name,' --- ', coordinates)
+        print('***************************')
+
 
     return render(request,'map/index.html',{"list":1})
