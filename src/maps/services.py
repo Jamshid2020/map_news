@@ -4,7 +4,8 @@ from django.db import connection
 def searchNews(request, limit):
 
     q = request.GET.get('q', '')
-
+    if q == '':
+        return []
     search_vector = f"document_vector @@ to_tsquery('{q}:*')"
 
     sql_txt =f"""SELECT "maps_news".title, link, maps_region.id,
