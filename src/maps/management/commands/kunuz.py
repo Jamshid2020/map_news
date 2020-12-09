@@ -21,6 +21,7 @@ class Command(BaseCommand):
 
 
         process = CrawlerProcess(settings={
+            'LOG_ENABLED': False,
             "FEEDS": {
                 "items.json": {"format": "json"},
             },
@@ -33,17 +34,22 @@ class Command(BaseCommand):
 class KunSpider(scrapy.Spider):
     name = 'kunsiper'
     start_urls = ['https://kun.uz/uz/news/list']
+    counter = 0
 
     def parse(self, response):
         for data in response.css('.daily-block'):
-            # title = data.css('.right-block>.news-title ::text').get()
             href = 'https://kun.uz'+data.css('a::attr("href")').get()
-            #print(href)
             url = response.urljoin(href)
             yield scrapy.Request(url, callback = self.parse_dir_contents)
-            #yield {'title': title.css('a ::text').get()}
+
+        self.counter +=1
+        if self.counter <= 25:
+            href = 'https://kun.uz'+response.css('.load-more a::attr("href")').get()
+            yield scrapy.Request(response.urljoin(href), self.parse)
+
 
     def parse_dir_contents(self, response):
+
         data=response.css('.single-layout__center')
         title = data.css('.single-header__title ::text').get()
         news_date = data.css('.date ::text').get()
@@ -55,10 +61,10 @@ class KunSpider(scrapy.Spider):
             if t:
                 content =f'{content}{t}'
             # print(news.css('p ::text').get())
-        print(title, news_date)
+        #print(title, news_date)
         # print(content)
         link=response.url
-        print(link)
+        #print(link)
         model=News(title=title,
             link=link, web_site='kun.uz',
             news_date=news_date,
