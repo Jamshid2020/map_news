@@ -17,9 +17,20 @@ def index(request):
 
 
     result = searchNews(request, 10)
+    list = []
     for title, link, region_id, region_name, coordinates in result:
-        print(region_name,' --- ', coordinates)
+        print(region_name,' --- ', coordinates, '------', link)
         print('***************************')
+        item = {}
+        item['title']=title
+        item['link']=link
+        item['region_id']=region_id
+        item['region_name']=region_name
+        item['coordinates']=coordinates
+
+        list.append(item)
+
+    
 
 
-    return render(request,'map/index.html',{"list":1})
+    return render(request,'map/index.html',{"list":list})

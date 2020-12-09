@@ -25,7 +25,9 @@ SECRET_KEY = 'vhpfo^ffc!2y_4js*u16a!itcgl!%!nzyb88&2nb%fk+nma89d'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '.fork.uz'
+]
 INTERNAL_IPS = [
     '127.0.0.1'
 ]
@@ -93,9 +95,9 @@ DATABASES = DATABASES = {
 
         'PASSWORD': 'map_root',
 
-        'HOST': 'localhost',
+        'HOST': 'fork.uz',
 
-        'PORT': '5432',
+        'PORT': '5435',
 
     }
 

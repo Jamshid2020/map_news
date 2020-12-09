@@ -10,14 +10,26 @@ def searchNews(request, limit):
 
     sql_txt =f"""SELECT "maps_news".title, link, maps_region.id,
     maps_region.name_region, koordinate_region
-FROM "maps_news"
-inner join maps_news_regions on maps_news.id = maps_news_regions.news_id
-inner join maps_region on maps_news_regions.region_id  = maps_region.id
-WHERE {search_vector}
-ORDER BY "maps_news"."created" DESC
-LIMIT %s"""
+    FROM "maps_news"
+    inner join maps_news_regions on maps_news.id = maps_news_regions.news_id
+    inner join maps_region on maps_news_regions.region_id  = maps_region.id
+    WHERE {search_vector}
+    ORDER BY "maps_news"."created" DESC
+    LIMIT %s"""
 
     with connection.cursor() as cursor:
         cursor.execute(sql_txt, [limit])
+        rows = cursor.fetchall()
+    return rows
+
+def test(request):
+    sql_txt ="""SELECT "maps_news".title, link, maps_region.id,
+    maps_region.name_region, koordinate_region
+    FROM "maps_news"
+    inner join maps_news_regions on maps_news.id = maps_news_regions.news_id
+    inner join maps_region on maps_news_regions.region_id  = maps_region.id
+    ORDER BY "maps_news"."created" DESC"""
+    with connection.cursor() as cursor:
+        cursor.execute(sql_txt)
         rows = cursor.fetchall()
     return rows
