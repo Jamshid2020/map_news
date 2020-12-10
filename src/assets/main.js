@@ -1,3 +1,45 @@
+$(function() {
+
+  $('.ui.search')
+  .search({
+    // change search endpoint to a custom endpoint by manipulating apiSettings
+    apiSettings: {
+      url: 'search/?q={query}'
+    },
+    fields: {
+     results : 'items'
+   },
+   searchFields   : [
+         'title'
+       ],
+    
+  })
+;
+
+//   var
+//   content = [
+//     {
+//       title: 'Horse',
+//       description: 'An Animal',
+//     },
+//     {
+//       title: 'Cow',
+//       description: 'Another Animal',
+//     }
+//   ]
+// ;
+// $('.ui.search')
+//   .search({
+//     source : content,
+//     searchFields   : [
+//       'title'
+//     ],
+//     fullTextSearch: truex
+//   })
+// ;
+
+
+});
 mapboxgl.accessToken = 'pk.eyJ1IjoiYm90aXJkZXZlbG9wZXIiLCJhIjoiY2l0d3ZwbHh6MDAyNzNubjJtOG12aGVpcCJ9.vhds9A1UCzV5w-Cy2v198A';
   var map = new mapboxgl.Map({
       container: 'map',

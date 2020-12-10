@@ -1,4 +1,6 @@
+import json
 from django.shortcuts import render
+from django.http import JsonResponse
 from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 from .models import News
 from .services import searchNews
@@ -36,3 +38,19 @@ def index(request):
 
 
     return render(request,'map/index.html',{"list":list, 'q':request.GET.get('q', '')})
+
+
+def search(request):
+    content = [
+    {
+      'title': 'Horse',
+      'description': 'An Animal',
+    },
+    {
+      'title': 'Cow',
+      'description': 'Another Animal',
+    }
+  ]
+
+    response = JsonResponse({"items": content})
+    return response
