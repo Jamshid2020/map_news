@@ -28,9 +28,11 @@ def index(request):
         item['region_name']=region_name
         item['coordinates']=coordinates
 
+        #print(title)
+
         list.append(item)
 
-    
 
 
-    return render(request,'map/index.html',{"list":list})
+
+    return render(request,'map/index.html',{"list":list, 'q':request.GET.get('q', '')})

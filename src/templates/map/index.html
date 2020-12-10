@@ -7,7 +7,7 @@
       <div class="item">
         <div class="ui input">
           <form action="" method="get">
-            <input name="q" type="text" placeholder="Search...">
+            <input name="q" value="{{q}}" type="text" placeholder="Search...">
           </form>
 
         </div>
@@ -16,12 +16,9 @@
         Viloyatlar
         <div class="menu">
           {% for item in list%}
-          <a class="item region" data-loc="{{item.coordinates}}">{{item.region_name}}</a>
+          <a class="item region" data-loc="{{item.coordinates}}" data-title="{{item.title}}" data-link="{{item.link}}">{{item.region_name}}</a>
           {% endfor%}
-          <!-- <a class="active item region" data-loc="69.2500,41.3167">Toshkent SHahari</a>
-          <a class="item region" data-loc="64.3456,39.7072">Buxoro</a>
-          <a class="item region" data-loc="66.9757,39.6552">Samarqand</a>
-          <a class="item region" data-loc="72.166667,40.75">Andijon</a> -->
+
         </div>
       </div>
       <a class="item">

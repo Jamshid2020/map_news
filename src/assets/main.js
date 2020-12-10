@@ -102,6 +102,22 @@ var pointsjson = {
 var regions = document.querySelectorAll('.region');
 
 for(var i=0; i<regions.length; i++){
+  var el = document.createElement('div');
+  el.className = "markers";
+  el.id = 'marker_'+i
+
+  var popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
+  regions[i].getAttribute('data-title')+
+  '<br/><a href="'+regions[i].getAttribute('data-link')+'" target="__BLANK">Batafsil</a>'
+  );
+
+  var lon_lat = regions[i].getAttribute('data-loc').split(",");
+  new mapboxgl.Marker(el)
+  .setLngLat(lon_lat)
+  .setPopup(popup) // sets a popup on this marker
+  .addTo(map);
+
+
   regions[i].onclick = function(){
 
 

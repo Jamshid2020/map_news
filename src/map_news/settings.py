@@ -26,7 +26,7 @@ SECRET_KEY = 'vhpfo^ffc!2y_4js*u16a!itcgl!%!nzyb88&2nb%fk+nma89d'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '.fork.uz'
+    '*'
 ]
 INTERNAL_IPS = [
     '127.0.0.1'
