@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 from .models import News
-from .services import searchNews
+from .services import searchNews, search_by_group
 
 def index(request):
 
@@ -41,16 +41,31 @@ def index(request):
 
 
 def search(request):
-    content = [
-    {
-      'title': 'Horse',
-      'description': 'An Animal',
-    },
-    {
-      'title': 'Cow',
-      'description': 'Another Animal',
-    }
-  ]
+    content=[]
+    result = search_by_group(request)
+    for id, title, regions in result:
+
+        item = {}
+        item['id']=id
+        item['title']=title
+        item['regions']=regions
+
+
+        #print(title)
+
+        content.append(item)
+
+
+  #   content = [
+  #   {
+  #     'title': 'Horse',
+  #     'description': 'An Animal',
+  #   },
+  #   {
+  #     'title': 'Cow',
+  #     'description': 'Another Animal',
+  #   }
+  # ]
 
     response = JsonResponse({"items": content})
     return response

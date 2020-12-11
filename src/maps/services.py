@@ -33,3 +33,21 @@ def test(request):
         cursor.execute(sql_txt)
         rows = cursor.fetchall()
     return rows
+def search_by_group(request):
+    q = request.GET.get('q', '')
+    if q == '':
+        return []
+    search_vector = f"document_vector @@ to_tsquery('{q}:*')"
+
+    sql_srch = f"""SELECT "maps_news".id, "maps_news".title,array_to_json(array_agg(row_to_json(maps_region) ) ) as regions
+    FROM "maps_news"
+    inner join maps_news_regions on maps_news.id = maps_news_regions.news_id
+    inner join maps_region on maps_news_regions.region_id  = maps_region.id
+    WHERE {search_vector}
+    group by "maps_news".id,"maps_news".title
+    LIMIT 10"""
+
+    with connection.cursor() as cursor:
+        cursor.execute(sql_srch)
+        rows = cursor.fetchall()
+    return rows

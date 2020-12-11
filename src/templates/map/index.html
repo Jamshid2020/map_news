@@ -21,7 +21,7 @@
       </div>
       <div class="item">
         Viloyatlar
-        <div class="menu">
+        <div class="menu" id="sal">
           {% for item in list%}
           <a class="item region" data-loc="{{item.coordinates}}" data-title="{{item.title}}" data-link="{{item.link}}">{{item.region_name}}</a>
           {% endfor%}

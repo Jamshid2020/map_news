@@ -1,45 +1,3 @@
-$(function() {
-
-  $('.ui.search')
-  .search({
-    // change search endpoint to a custom endpoint by manipulating apiSettings
-    apiSettings: {
-      url: 'search/?q={query}'
-    },
-    fields: {
-     results : 'items'
-   },
-   searchFields   : [
-         'title'
-       ],
-    
-  })
-;
-
-//   var
-//   content = [
-//     {
-//       title: 'Horse',
-//       description: 'An Animal',
-//     },
-//     {
-//       title: 'Cow',
-//       description: 'Another Animal',
-//     }
-//   ]
-// ;
-// $('.ui.search')
-//   .search({
-//     source : content,
-//     searchFields   : [
-//       'title'
-//     ],
-//     fullTextSearch: truex
-//   })
-// ;
-
-
-});
 mapboxgl.accessToken = 'pk.eyJ1IjoiYm90aXJkZXZlbG9wZXIiLCJhIjoiY2l0d3ZwbHh6MDAyNzNubjJtOG12aGVpcCJ9.vhds9A1UCzV5w-Cy2v198A';
   var map = new mapboxgl.Map({
       container: 'map',
@@ -141,52 +99,94 @@ var pointsjson = {
       map.setLayerZoomRange('points', 2, 15);
   });
 
-var regions = document.querySelectorAll('.region');
+function mapUpdate(){
+  var regions = document.querySelectorAll('.region');
 
-for(var i=0; i<regions.length; i++){
-  var el = document.createElement('div');
-  el.className = "markers";
-  el.id = 'marker_'+i
+  for(var i=0; i<regions.length; i++){
+    var el = document.createElement('div');
+    el.className = "markers";
+    el.id = 'marker_'+i
 
-  var popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
-  regions[i].getAttribute('data-title')+
-  '<br/><a href="'+regions[i].getAttribute('data-link')+'" target="__BLANK">Batafsil</a>'
-  );
+    var popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
+    regions[i].getAttribute('data-title')+
+    '<br/><a href="'+regions[i].getAttribute('data-link')+'" target="__BLANK">Batafsil</a>'
+    );
 
-  var lon_lat = regions[i].getAttribute('data-loc').split(",");
-  new mapboxgl.Marker(el)
-  .setLngLat(lon_lat)
-  .setPopup(popup) // sets a popup on this marker
-  .addTo(map);
-
-
-  regions[i].onclick = function(){
+    var lon_lat = regions[i].getAttribute('data-loc').split(",");
+    new mapboxgl.Marker(el)
+    .setLngLat(lon_lat)
+    .setPopup(popup) // sets a popup on this marker
+    .addTo(map);
 
 
-      lon_lat = this.getAttribute('data-loc').split(",");
-      //console.log(lon_lat);
-      new_point = {
-          'type': 'Feature',
-          'geometry': {
-              'type': 'Point',
-              'coordinates': lon_lat
+    regions[i].onclick = function(){
+
+
+        lon_lat = this.getAttribute('data-loc').split(",");
+        //console.log(lon_lat);
+        new_point = {
+            'type': 'Feature',
+            'geometry': {
+                'type': 'Point',
+                'coordinates': lon_lat
+            }
+        };
+        is_new = true;
+
+        for(var j=0; j < pointsjson.features.length; j++){
+          var a = pointsjson.features[j]['geometry']['coordinates'];
+          console.log(a);
+          if (a[0] == lon_lat[0] && a[1] == lon_lat[1]){
+            pointsjson.features.splice(j, 1);
+            is_new = false;
           }
-      };
-      is_new = true;
-
-      for(var j=0; j < pointsjson.features.length; j++){
-        var a = pointsjson.features[j]['geometry']['coordinates'];
-        console.log(a);
-        if (a[0] == lon_lat[0] && a[1] == lon_lat[1]){
-          pointsjson.features.splice(j, 1);
-          is_new = false;
         }
-      }
-      if (is_new){
-          pointsjson.features.push(new_point);
-      }
+        if (is_new){
+            pointsjson.features.push(new_point);
+        }
 
-      map.getSource('points').setData(pointsjson);
+        map.getSource('points').setData(pointsjson);
 
+    }
   }
+
 }
+
+$(function() {
+
+  $('.ui.search')
+  .search({
+    // change search endpoint to a custom endpoint by manipulating apiSettings
+    apiSettings: {
+      url: 'search/?q={query}'
+
+    },
+    fields: {
+     results : 'items'
+   },
+   minCharacters : 3,
+   searchFields   : [
+         'title'
+       ],
+    onSelect: function(result, response) {
+
+      document.getElementById("sal").innerHTML='';
+      for (x in result.regions) {
+
+        hudud = result.regions[x];
+        console.log(hudud);
+
+
+        var new_item = document.createElement("a");
+        new_item.innerText  = hudud.name_region
+        new_item.setAttribute('class', "item region");
+        new_item.setAttribute('data-loc', hudud.koordinate_region);
+        new_item.setAttribute('data-title', result.title);
+        new_item.setAttribute('data-link',"#");
+        document.getElementById("sal").appendChild(new_item);
+      }
+      mapUpdate();
+    }
+
+  });
+});
