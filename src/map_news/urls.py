@@ -16,10 +16,18 @@ Including another URLconf
 import debug_toolbar
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework import routers
+from api.v1.maps.views import UserViewSet
 
+
+router = routers.DefaultRouter()
+router.register(r'v1/users', UserViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('maps.urls')),
+    path('api/', include(router.urls)),
+
+
     path('__debug__/', include(debug_toolbar.urls)),
 ]
